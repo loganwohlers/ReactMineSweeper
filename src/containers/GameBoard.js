@@ -87,9 +87,22 @@ class GameBoard extends React.Component {
       if (copyGrid[current[0]][current[1]] === 0) {
         copyGrid[current[0]][current[1]] = 'X'
       }
+
+      //check all these and if it's not 0 OR mine set it to clicked
       let zeroCheck = this.generatePossibilities(current[0], current[1])
+      // && copyGrid[n[0]][n[1]]
+      let bordering = zeroCheck.filter(n => copyGrid[n[0]][n[1]] !== 0)
+      // for (let i = 0; i < neighbors.length; i++) {
+      // }
+
+
+      bordering.forEach(ss => {
+        let currValue = copyGrid[ss[0]][ss[1]]
+        copyGrid[ss[0]][ss[1]] = currValue + "**"
+      })
+
+      //fitler for 0's
       let neighbors = zeroCheck.filter(n => copyGrid[n[0]][n[1]] === 0)
-      // console.log(neighbors)
       for (let i = 0; i < neighbors.length; i++) {
         if (!visited[neighbors[i]]) {
           queue.push(neighbors[i])
