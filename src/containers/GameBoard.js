@@ -32,9 +32,8 @@ class GameBoard extends React.Component {
     this.setState({ grid: copyGrid })
   }
 
-  neighborMines(x, y, copyGrid) {
-    let bombCount = 0
-    let poss = [
+  generatePossibilities(x, y) {
+    return [
       [x - 1, y - 1],
       [x - 1, y],
       [x - 1, y + 1],
@@ -45,26 +44,21 @@ class GameBoard extends React.Component {
       [x + 1, y + 1]
     ]
 
-    console.log(x, y, "COORDS")
-    for (var i = 0; i < poss.length; i++) {
+  }
 
+  neighborMines(x, y, copyGrid) {
+    let bombCount = 0
+    let poss = this.generatePossibilities(x, y)
+    for (var i = 0; i < poss.length; i++) {
       let xx = poss[i][0]
       let yy = poss[i][1]
-      console.log(xx, yy)
       if (xx >= 0 && yy >= 0 && xx < copyGrid.length && yy < copyGrid.length) {
         let coor = (copyGrid[xx][yy])
-        console.log("checking at coor:", coor)
         if (coor === 'b') {
-          console.log(xx, yy, "mine")
           bombCount++
-        } else {
-          console.log("no mine at", xx, yy)
         }
-      } else {
-        console.log("not a valid location", xx, yy)
       }
     }
-    console.log("")
     return bombCount
   }
 
@@ -80,6 +74,12 @@ class GameBoard extends React.Component {
     }
     this.setState({ grid: updateGrid })
   }
+
+  clearEmpty() {
+
+
+  }
+
 
   render() {
     const style = {
