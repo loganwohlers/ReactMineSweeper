@@ -4,43 +4,62 @@ import Square from '../components/Square'
 
 class GameBoard extends React.Component {
 
-    constructor() {
-        super()
-        this.state = {
-            grid: Array(3).fill().map(() => new Array(3).fill(0))
+  constructor(props) {
+    super(props)
+    this.state = {
+      grid: Array(6).fill().map(() => new Array(6).fill(0)),
+      mines: 10
+    }
+  }
 
-        }
+  componentDidMount() {
+    this.randomMines()
+  }
+
+  randomMines() {
+    let mines = 0
+    let copyGrid = [...this.state.grid]
+
+    while (mines < this.state.mines) {
+      let x = Math.floor(Math.random() * this.state.grid.length)
+      let y = Math.floor(Math.random() * this.state.grid.length)
+      if (copyGrid[x][y] === 0) {
+        copyGrid[x][y] = 'b'
+        mines++
+      }
+    }
+    this.setState({grid: copyGrid})
+  }
+
+  render() {
+    const style = {
+      textAlign: "center",
+      tableLayout: 'fixed',
     }
 
-    componentDidMount() {
-    }
-
-    render() {
-        const style = {
-            textAlign: "center",
-            tableLayout: 'fixed',
-        }
-
-        const gameGrid = this.state.grid.map((row, i) => {
+    const gameGrid = this.state.grid.map((row, i) => {
+      return (
+        <tr key={"row" + i}>
+          {row.map((col, j) => {
             return (
-                <tr key={"row" + i}>
-                    {row.map((col, j) => {
-                        return (
-                            <Square key={i + ":" + j} data={this.state.grid[i][j]} />
-                        )
-                    })}
-                </tr>
-            )
-        })
-        return (
-            <table cellSpacing="0" id="table" style={style}>
-                <tbody>
-                    {gameGrid}
-                </tbody>
-            </table>
+              <Square
+                key={i + ":" + j}
+                data={this.state.grid[i][j]} />
+              )
+            })}
+        </tr>
+      )
+    })
 
-        )
-    }
+    return (
+      <table cellSpacing="0" id="table" style={style}>
+          <tbody>
+            {gameGrid}
+          </tbody>
+      </table>
+
+    )
+  }
 }
 
 export default GameBoard;
