@@ -29,32 +29,42 @@ class GameBoard extends React.Component {
         mines++
       }
     }
-    this.setState({grid: copyGrid})
+    this.setState({ grid: copyGrid })
   }
 
   neighborMines(x, y, copyGrid) {
     let bombCount = 0
     let poss = [
-      [x-1, y-1],
-      [x-1, y],
-      [x-1, y+1],
-      [x, y+1],
-      [x, y-1],
-      [x+1, y-1],
-      [x+1, y],
-      [x+1, y+1],
+      [x - 1, y - 1],
+      [x - 1, y],
+      [x - 1, y + 1],
+      [x, y + 1],
+      [x, y - 1],
+      [x + 1, y - 1],
+      [x + 1, y],
+      [x + 1, y + 1]
     ]
 
+    console.log(x, y, "COORDS")
     for (var i = 0; i < poss.length; i++) {
+
       let xx = poss[i][0]
       let yy = poss[i][1]
-      if (xx > 0 && yy > 0 && xx < copyGrid.length && yy < copyGrid.length) {
+      console.log(xx, yy)
+      if (xx >= 0 && yy >= 0 && xx < copyGrid.length && yy < copyGrid.length) {
         let coor = (copyGrid[xx][yy])
+        console.log("checking at coor:", coor)
         if (coor === 'b') {
+          console.log(xx, yy, "mine")
           bombCount++
+        } else {
+          console.log("no mine at", xx, yy)
         }
+      } else {
+        console.log("not a valid location", xx, yy)
       }
     }
+    console.log("")
     return bombCount
   }
 
@@ -85,17 +95,17 @@ class GameBoard extends React.Component {
               <Square
                 key={i + ":" + j}
                 data={this.state.grid[i][j]} />
-              )
-            })}
+            )
+          })}
         </tr>
       )
     })
 
     return (
       <table cellSpacing="0" id="table" style={style}>
-          <tbody>
-            {gameGrid}
-          </tbody>
+        <tbody>
+          {gameGrid}
+        </tbody>
       </table>
 
     )
@@ -104,15 +114,4 @@ class GameBoard extends React.Component {
 
 export default GameBoard;
 
-   // piece[i][j]
-    // materialize(piece) {
-    //     let copyGrid = [...this.state.grid]
-    //     for (let i = 0; i < piece.length; i++) {
-    //         for (let j = 0; j < piece[i].length; j++) {
-    //             copyGrid[i + 4][j + 4] = piece[i][j];
-    //practice offset
-    // grid[i + x][j + y] = b[i][j];
-    //         }
-    //     }
-    //     this.setState({ grid: copyGrid })
-    // }
+
