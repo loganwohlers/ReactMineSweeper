@@ -12,3 +12,20 @@
   border: 1px;
   border-style: solid;
 }
+
+.clickedsquare {
+  height: 25px;
+  width: 25px;
+  border: 1px;
+  border-style: solid;
+  background-color: red;
+}
+
+.unclickedsquare {
+  display: none;
+  height: 25px;
+  width: 25px;
+  border: 1px;
+  border-style: solid;
+  background-color: rgb(83, 135, 135);
+}
