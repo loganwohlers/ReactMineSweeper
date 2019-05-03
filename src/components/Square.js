@@ -14,7 +14,7 @@ class Square extends React.Component {
     //     this.setState({ clicked: val })
     // }
     render() {
-        const color = this.state.clicked ? 'red' : 'white'
+        const color = this.props.data !== 0 ? 'red' : 'white'
         return (
             <td >
                 <div className="square" style={{ backgroundColor: color }} >
