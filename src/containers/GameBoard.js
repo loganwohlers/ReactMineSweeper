@@ -14,6 +14,7 @@ class GameBoard extends React.Component {
 
   componentDidMount() {
     this.randomMines()
+    this.setNeighborCount()
   }
 
   randomMines() {
@@ -29,6 +30,45 @@ class GameBoard extends React.Component {
       }
     }
     this.setState({grid: copyGrid})
+  }
+
+  neighborMines(x, y, copyGrid) {
+    let bombCount = 0
+    let poss = [
+      [x-1, y-1],
+      [x-1, y],
+      [x-1, y+1],
+      [x, y+1],
+      [x, y-1],
+      [x+1, y-1],
+      [x+1, y],
+      [x+1, y+1],
+    ]
+
+    for (var i = 0; i < poss.length; i++) {
+      let xx = poss[i][0]
+      let yy = poss[i][1]
+      if (xx > 0 && yy > 0 && xx < copyGrid.length && yy < copyGrid.length) {
+        let coor = (copyGrid[xx][yy])
+        if (coor === 'b') {
+          bombCount++
+        }
+      }
+    }
+    return bombCount
+  }
+
+  setNeighborCount() {
+    let copyGrid = [...this.state.grid]
+    let updateGrid = [...this.state.grid]
+    for (var i = 0; i < copyGrid.length; i++) {
+      for (var j = 0; j < copyGrid.length; j++) {
+        if (copyGrid[i][j] !== 'b') {
+          updateGrid[i][j] = this.neighborMines(i, j, copyGrid)
+        }
+      }
+    }
+    this.setState({ grid: updateGrid })
   }
 
   render() {
