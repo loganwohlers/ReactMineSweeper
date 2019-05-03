@@ -1,34 +1,18 @@
 import React from 'react'
 import Square from '../components/Square'
 
-const block = [
-    [1, 1],
-    [1, 1]
-]
 
 class GameBoard extends React.Component {
 
     constructor() {
         super()
         this.state = {
-            grid: Array(20).fill().map(function () { return new Array(10).fill(0) })
+            grid: Array(3).fill().map(() => new Array(3).fill(0))
 
         }
-    }
-    // piece[i][j]
-    materialize(piece) {
-        let copyGrid = [...this.state.grid]
-        for (let i = 0; i < piece.length; i++) {
-            for (let j = 0; j < piece[i].length; j++) {
-                copyGrid[i + 4][j + 4] = piece[i][j];
-                // grid[i + x][j + y] = b[i][j];
-            }
-        }
-        this.setState({ grid: copyGrid })
     }
 
     componentDidMount() {
-        this.materialize(block)
     }
 
     render() {
@@ -60,3 +44,16 @@ class GameBoard extends React.Component {
 }
 
 export default GameBoard;
+
+   // piece[i][j]
+    // materialize(piece) {
+    //     let copyGrid = [...this.state.grid]
+    //     for (let i = 0; i < piece.length; i++) {
+    //         for (let j = 0; j < piece[i].length; j++) {
+    //             copyGrid[i + 4][j + 4] = piece[i][j];
+    //practice offset
+    // grid[i + x][j + y] = b[i][j];
+    //         }
+    //     }
+    //     this.setState({ grid: copyGrid })
+    // }
