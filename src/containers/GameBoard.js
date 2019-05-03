@@ -90,6 +90,7 @@ class GameBoard extends React.Component {
 
       //check all these and if it's not 0 OR mine set it to clicked
       let zeroCheck = this.generatePossibilities(current[0], current[1])
+
       // && copyGrid[n[0]][n[1]]
       let bordering = zeroCheck.filter(n => copyGrid[n[0]][n[1]] !== 0)
       // for (let i = 0; i < neighbors.length; i++) {

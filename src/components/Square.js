@@ -18,7 +18,6 @@ class Square extends React.Component {
         }
         let clicked = !this.state.clicked
         this.setState({ clicked })
-
     }
 
     render() {
