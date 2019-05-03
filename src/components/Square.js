@@ -13,9 +13,12 @@ class Square extends React.Component {
     handleClick = (e) => {
         if (this.props.data === 'b') {
             alert("YOU LOSE")
+        } else if (this.props.data === 0) {
+            this.props.handleSquareClick(e, this.props.coords)
         }
         let clicked = !this.state.clicked
         this.setState({ clicked })
+
     }
 
     render() {

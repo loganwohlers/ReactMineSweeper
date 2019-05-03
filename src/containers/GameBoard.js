@@ -33,7 +33,7 @@ class GameBoard extends React.Component {
   }
 
   generatePossibilities(x, y) {
-    return [
+    let all = [
       [x - 1, y - 1],
       [x - 1, y],
       [x - 1, y + 1],
@@ -43,7 +43,11 @@ class GameBoard extends React.Component {
       [x + 1, y],
       [x + 1, y + 1]
     ]
-
+    return all.filter((coords, i) => {
+      let xx = all[i][0]
+      let yy = all[i][1]
+      return (xx >= 0 && yy >= 0 && xx < this.state.grid.length && yy < this.state.grid.length)
+    })
   }
 
   neighborMines(x, y, copyGrid) {
@@ -52,11 +56,9 @@ class GameBoard extends React.Component {
     for (var i = 0; i < poss.length; i++) {
       let xx = poss[i][0]
       let yy = poss[i][1]
-      if (xx >= 0 && yy >= 0 && xx < copyGrid.length && yy < copyGrid.length) {
-        let coor = (copyGrid[xx][yy])
-        if (coor === 'b') {
-          bombCount++
-        }
+      let coords = (copyGrid[xx][yy])
+      if (coords === 'b') {
+        bombCount++
       }
     }
     return bombCount
@@ -74,10 +76,30 @@ class GameBoard extends React.Component {
     }
     this.setState({ grid: updateGrid })
   }
-
-  clearEmpty() {
-
-
+  //breadth first search
+  handleSquareClick = (e, coords) => {
+    let copyGrid = [...this.state.grid]
+    let visited = {}
+    visited[coords] = true
+    let queue = [coords]
+    while (queue.length > 0) {
+      let current = queue.pop()
+      if (copyGrid[current[0]][current[1]] === 0) {
+        copyGrid[current[0]][current[1]] = 'X'
+      }
+      let zeroCheck = this.generatePossibilities(current[0], current[1])
+      let neighbors = zeroCheck.filter(n => copyGrid[n[0]][n[1]] === 0)
+      // console.log(neighbors)
+      for (let i = 0; i < neighbors.length; i++) {
+        if (!visited[neighbors[i]]) {
+          queue.push(neighbors[i])
+          visited[neighbors[i]] = true
+        }
+        //visit current
+      }
+    }
+    console.log("out of queue")
+    this.setState({ grid: copyGrid })
   }
 
 
@@ -94,7 +116,9 @@ class GameBoard extends React.Component {
             return (
               <Square
                 key={i + ":" + j}
-                data={this.state.grid[i][j]} />
+                data={this.state.grid[i][j]}
+                coords={[i, j]}
+                handleSquareClick={this.handleSquareClick} />
             )
           })}
         </tr>
