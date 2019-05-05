@@ -32,6 +32,8 @@ class GameBoard extends React.Component {
     this.setState({ grid: copyGrid })
   }
 
+  //uses a 2d array of the 8 possible tiles around any given x,y coordinate and 
+  //then filters out those which could not exist on currents state's board length
   generatePossibilities(x, y) {
     let all = [
       [x - 1, y - 1],
@@ -50,6 +52,7 @@ class GameBoard extends React.Component {
     })
   }
 
+  //checks- through a copy of the current state grid- the value of all neighboring tiles and returns # of mines
   neighborMines(x, y, copyGrid) {
     let bombCount = 0
     let poss = this.generatePossibilities(x, y)
@@ -64,6 +67,7 @@ class GameBoard extends React.Component {
     return bombCount
   }
 
+  //reassigns the values in the state grid to accuratly reflect the number of mines contained in neighboring tiles
   setNeighborCount() {
     let copyGrid = [...this.state.grid]
     let updateGrid = [...this.state.grid]
@@ -76,7 +80,10 @@ class GameBoard extends React.Component {
     }
     this.setState({ grid: updateGrid })
   }
-  //breadth first search
+
+  //breadth first search to "click" all suitable 0 tiles and reveal all suitable # tiles
+
+  //this whole method needs to be cleaned up a bit
   handleSquareClick = (e, coords) => {
     let copyGrid = [...this.state.grid]
     let visited = {}
@@ -84,38 +91,36 @@ class GameBoard extends React.Component {
     let queue = [coords]
     while (queue.length > 0) {
       let current = queue.pop()
+
+      //
       if (copyGrid[current[0]][current[1]] === 0) {
         copyGrid[current[0]][current[1]] = 'X'
       }
 
-      //check all these and if it's not 0 OR mine set it to clicked
+      //grab all possibile neighboring tiles- 
       let zeroCheck = this.generatePossibilities(current[0], current[1])
 
       // && copyGrid[n[0]][n[1]]
+
       let bordering = zeroCheck.filter(n => copyGrid[n[0]][n[1]] !== 0)
-      // for (let i = 0; i < neighbors.length; i++) {
-      // }
 
-
+      //"reveal" tile on suitable bordering # tiles
       bordering.forEach(ss => {
         let currValue = copyGrid[ss[0]][ss[1]]
         copyGrid[ss[0]][ss[1]] = currValue + "**"
       })
 
-      //fitler for 0's
+      //fitler for suitable 0/blank tiles and visit them on search
       let neighbors = zeroCheck.filter(n => copyGrid[n[0]][n[1]] === 0)
       for (let i = 0; i < neighbors.length; i++) {
         if (!visited[neighbors[i]]) {
           queue.push(neighbors[i])
           visited[neighbors[i]] = true
         }
-        //visit current
       }
     }
-    console.log("out of queue")
     this.setState({ grid: copyGrid })
   }
-
 
   render() {
     const style = {
@@ -123,6 +128,8 @@ class GameBoard extends React.Component {
       tableLayout: 'fixed',
     }
 
+    //render the current borad via passing in values from state grid to Square components and 
+    //arranging them in a table
     const gameGrid = this.state.grid.map((row, i) => {
       return (
         <tr key={"row" + i}>
