@@ -13,7 +13,7 @@
   border-style: solid;
 }
 
-.clickedsquare {
+.clickedSquare {
   height: 25px;
   width: 25px;
   border: 1px;
@@ -21,11 +21,21 @@
   background-color: red;
 }
 
-.unclickedsquare {
+.unclickedSquare {
   display: none;
   height: 25px;
   width: 25px;
   border: 1px;
   border-style: solid;
-  background-color: rgb(83, 135, 135);
+}
+
+.flaggedSquare {
+  height: 25px;
+  width: 25px;
+  /* background-color: purple; */
+}
+
+.flag {
+  height: 25px;
+  width: 25px;
 }

@@ -136,6 +136,12 @@ class GameBoard extends React.Component {
     this.setState({ grid: copyGrid })
   }
 
+  handleFlagClick = (e, coords) => {
+    let copyGrid = [...this.state.grid];
+    copyGrid[coords[0]][coords[1]] += 'F'
+    this.setState({ grid: copyGrid })
+  }
+
   render() {
     const style = {
       textAlign: "center",
@@ -149,15 +155,19 @@ class GameBoard extends React.Component {
         <tr key={"row" + i}>
           {row.map((col, j) => {
             let revealed = false;
+            let flagged = false;
             let currentValue = this.state.grid[i][j].toString()
             currentValue.includes('*') ? revealed=true : revealed=false
+            currentValue.includes('F') ? flagged=true : flagged=false
             return (
               <Square
                 key={i + ":" + j}
                 revealed={revealed}
                 data={currentValue.charAt(0)}
+                flagged={flagged}
                 coords={[i, j]}
-                handleSquareClick={this.handleSquareClick} />
+                handleSquareClick={this.handleSquareClick}
+                handleFlagClick={this.handleFlagClick} />
             )
           })}
         </tr>

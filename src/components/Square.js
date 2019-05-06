@@ -1,40 +1,51 @@
 import React from 'react'
+import flag from '../assets/flag.png'
+import mine from '../assets/mine.png'
 
 class Square extends React.Component {
 
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-    //         revealed: false
-    //     }
-    // }
+  handleClick = (e) => {
+    this.props.handleSquareClick(e, this.props.coords)
+  }
 
-    handleClick = (e) => {
-      this.props.handleSquareClick(e, this.props.coords)
-        //
-        // if (this.props.data === 'b') {
-        //     alert("YOU LOSE")
-        // } else if (this.props.data === 0) {
-        //     this.props.handleZeroSquareClick(e, this.props.coords)
-        // } else {
-        //   this.props.handleSquareClick(e, this.props.coords)
-        // }
-        // let revealed = true
-        // this.setState({ revealed })
+  handleFlag = (e) => {
+    if (!this.props.revealed) {
+      this.props.handleFlagClick(e, this.props.coords)
     }
+  }
 
-    render() {
-        let cssClick = this.props.revealed ? 'clickedsquare' : 'unclickedsquare'
-        return (
-            <td >
-                <div className="square" onClick={this.handleClick}>
-                    <div className={cssClick}>
-                        {this.props.data}
-                    </div>
+  determineCSS() {
+    if (this.props.flagged) {
+      return 'flaggedSquare'
+    } else if (this.props.revealed) {
+      return 'clickedSquare'
+    } else {
+      return 'unclickedSquare'
+    }
+  }
+
+  determineContent() {
+    if (this.props.flagged) {
+      return <img className='flag' src={flag} alt='' />
+    } else {
+      return this.props.data
+    }
+  }
+
+  render() {
+    return (
+        <td >
+            <div
+              className="square"
+              onClick={this.handleClick}
+              onContextMenu={this.handleFlag}>
+                <div className={this.determineCSS()}>
+                  {this.determineContent()}
                 </div>
-            </td >
-        )
-    }
+            </div>
+        </td >
+    )
+  }
 }
 
 export default Square;
