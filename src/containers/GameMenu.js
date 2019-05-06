@@ -1,5 +1,4 @@
 import React from 'react'
-// import './ChooseDifficulty.css';
 
 class GameMenu extends React.Component {
     constructor(props) {

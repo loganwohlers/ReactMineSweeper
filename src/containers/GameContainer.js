@@ -5,7 +5,7 @@ class GameContainer extends React.Component {
     render() {
         return (
             <div>
-                <GameBoard />
+                <GameBoard difficulty={this.props.difficulty} />
             </div>
         )
     }

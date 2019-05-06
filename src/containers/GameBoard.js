@@ -3,19 +3,42 @@ import Square from '../components/Square'
 
 
 class GameBoard extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
-      grid: Array(16).fill().map(() => new Array(16).fill(0)),
-      mines: 40,
+      grid: Array(9).fill().map(() => new Array(9).fill(0)),
+      mines: 10,
       dead: false
     }
   }
 
   componentDidMount() {
+    this.determineBoard(this.props.difficulty)
     this.randomMines()
     this.setNeighborCount()
+  }
+
+  determineBoard = (difficulty) => {
+    console.log(difficulty);
+  switch (difficulty) {
+    case 'intermediate':
+      this.setState({
+        grid: Array(16).fill().map(() => new Array(16).fill(0)),
+        mines: 40
+      })
+      break;
+    case 'difficult':
+      this.setState({
+        grid: Array(16).fill().map(() => new Array(30).fill(0)),
+        mines: 99
+      })
+      break;
+    default:
+      this.setState({
+        grid: Array(9).fill().map(() => new Array(9).fill(0)),
+        mines: 10
+      })
+    }
   }
 
   randomMines() {
