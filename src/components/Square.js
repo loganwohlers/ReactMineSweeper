@@ -9,7 +9,7 @@ class Square extends React.Component {
   }
 
   handleFlag = (e) => {
-    if (!this.props.revealed) {
+    if (!this.props.revealed || !this.props.flagged) {
       this.props.handleFlagClick(e, this.props.coords)
     }
   }

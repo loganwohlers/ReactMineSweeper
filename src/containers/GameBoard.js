@@ -108,7 +108,7 @@ class GameBoard extends React.Component {
       let current = queue.pop()
 
       if (copyGrid[current[0]][current[1]] === 0) {
-        copyGrid[current[0]][current[1]] = 'X*'
+        copyGrid[current[0]][current[1]] = ' *'
       }
 
       //grab all possibile neighboring tiles
@@ -138,7 +138,12 @@ class GameBoard extends React.Component {
 
   handleFlagClick = (e, coords) => {
     let copyGrid = [...this.state.grid];
-    copyGrid[coords[0]][coords[1]] += 'F'
+    let stringValue = copyGrid[coords[0]][coords[1]] + '';
+    if (stringValue.includes('F')) {
+      copyGrid[coords[0]][coords[1]] = stringValue.slice(0, 1)
+    } else {
+      copyGrid[coords[0]][coords[1]] += 'F'
+    }
     this.setState({ grid: copyGrid })
   }
 
