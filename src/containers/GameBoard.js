@@ -1,7 +1,6 @@
 import React from 'react'
 import Square from '../components/Square'
 
-
 class GameBoard extends React.Component {
   constructor(props) {
     super(props)
@@ -18,26 +17,34 @@ class GameBoard extends React.Component {
     this.setNeighborCount()
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.difficulty !== this.props.difficulty) {
+      this.determineBoard(this.props.difficulty)
+    }
+    this.randomMines()
+    this.setNeighborCount()
+  }
+
   determineBoard = (difficulty) => {
     console.log(difficulty);
-  switch (difficulty) {
-    case 'intermediate':
-      this.setState({
-        grid: Array(16).fill().map(() => new Array(16).fill(0)),
-        mines: 40
-      })
-      break;
-    case 'difficult':
-      this.setState({
-        grid: Array(16).fill().map(() => new Array(30).fill(0)),
-        mines: 99
-      })
-      break;
-    default:
-      this.setState({
-        grid: Array(9).fill().map(() => new Array(9).fill(0)),
-        mines: 10
-      })
+    switch (difficulty) {
+      case 'intermediate':
+        this.setState({
+          grid: Array(16).fill().map(() => new Array(16).fill(0)),
+          mines: 40
+        })
+        break;
+      case 'difficult':
+        this.setState({
+          grid: Array(16).fill().map(() => new Array(30).fill(0)),
+          mines: 99
+        })
+        break;
+      default:
+        this.setState({
+          grid: Array(9).fill().map(() => new Array(9).fill(0)),
+          mines: 10
+        })
     }
   }
 
