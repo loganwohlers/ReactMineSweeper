@@ -32,7 +32,7 @@ class GameBoard extends React.Component {
     this.setState({ grid: copyGrid })
   }
 
-  //uses a 2d array of the 8 possible tiles around any given x,y coordinate and 
+  //uses a 2d array of the 8 possible tiles around any given x,y coordinate and
   //then filters out those which could not exist on currents state's board length
   generatePossibilities(x, y) {
     let all = [
@@ -83,35 +83,48 @@ class GameBoard extends React.Component {
 
   //breadth first search to "click" all suitable 0 tiles and reveal all suitable # tiles
 
-  //this whole method needs to be cleaned up a bit
   handleSquareClick = (e, coords) => {
+    let currentValue = this.state.grid[coords[0]][coords[1]]
+    if (currentValue === 'b') {
+      // loose game function
+      alert('you lose')
+    } else if (currentValue === 0) {
+      this.handleZeroSquareClick(coords)
+    } else {
+      let copyGrid = [...this.state.grid]
+      copyGrid[coords[0]][coords[1]] = currentValue + "*"
+      this.setState({ grid: copyGrid })
+    }
+  }
+
+  //this whole method needs to be cleaned up a bit
+  handleZeroSquareClick = (coords) => {
     let copyGrid = [...this.state.grid]
     let visited = {}
     visited[coords] = true
     let queue = [coords]
+
     while (queue.length > 0) {
       let current = queue.pop()
 
-      //
       if (copyGrid[current[0]][current[1]] === 0) {
-        copyGrid[current[0]][current[1]] = 'X'
+        copyGrid[current[0]][current[1]] = 'X*'
       }
 
-      //grab all possibile neighboring tiles- 
-      let zeroCheck = this.generatePossibilities(current[0], current[1])
+      //grab all possibile neighboring tiles
+      let poss = this.generatePossibilities(current[0], current[1])
 
-      // && copyGrid[n[0]][n[1]]
+      // filter possibilities for numbe tile and reveal them
+      let bordering = poss.filter(n => copyGrid[n[0]][n[1]] !== 0)
 
-      let bordering = zeroCheck.filter(n => copyGrid[n[0]][n[1]] !== 0)
-
-      //"reveal" tile on suitable bordering # tiles
       bordering.forEach(ss => {
         let currValue = copyGrid[ss[0]][ss[1]]
-        copyGrid[ss[0]][ss[1]] = currValue + "**"
+        // * is revealed
+        copyGrid[ss[0]][ss[1]] = currValue + "*"
       })
 
-      //fitler for suitable 0/blank tiles and visit them on search
-      let neighbors = zeroCheck.filter(n => copyGrid[n[0]][n[1]] === 0)
+      //filter for suitable 0/blank tiles and visit them on search
+      let neighbors = poss.filter(n => copyGrid[n[0]][n[1]] === 0)
       for (let i = 0; i < neighbors.length; i++) {
         if (!visited[neighbors[i]]) {
           queue.push(neighbors[i])
@@ -119,6 +132,7 @@ class GameBoard extends React.Component {
         }
       }
     }
+
     this.setState({ grid: copyGrid })
   }
 
@@ -128,16 +142,20 @@ class GameBoard extends React.Component {
       tableLayout: 'fixed',
     }
 
-    //render the current borad via passing in values from state grid to Square components and 
+    //render the current borad via passing in values from state grid to Square components and
     //arranging them in a table
     const gameGrid = this.state.grid.map((row, i) => {
       return (
         <tr key={"row" + i}>
           {row.map((col, j) => {
+            let revealed = false;
+            let currentValue = this.state.grid[i][j].toString()
+            currentValue.includes('*') ? revealed=true : revealed=false
             return (
               <Square
                 key={i + ":" + j}
-                data={this.state.grid[i][j]}
+                revealed={revealed}
+                data={currentValue.charAt(0)}
                 coords={[i, j]}
                 handleSquareClick={this.handleSquareClick} />
             )
@@ -158,5 +176,3 @@ class GameBoard extends React.Component {
 }
 
 export default GameBoard;
-
-

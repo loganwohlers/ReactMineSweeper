@@ -2,26 +2,29 @@ import React from 'react'
 
 class Square extends React.Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            clicked: false
-            //display hidden-- once clicked -> true
-        }
-    }
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {
+    //         revealed: false
+    //     }
+    // }
 
     handleClick = (e) => {
-        if (this.props.data === 'b') {
-            alert("YOU LOSE")
-        } else if (this.props.data === 0) {
-            this.props.handleSquareClick(e, this.props.coords)
-        }
-        let clicked = !this.state.clicked
-        this.setState({ clicked })
+      this.props.handleSquareClick(e, this.props.coords)
+        //
+        // if (this.props.data === 'b') {
+        //     alert("YOU LOSE")
+        // } else if (this.props.data === 0) {
+        //     this.props.handleZeroSquareClick(e, this.props.coords)
+        // } else {
+        //   this.props.handleSquareClick(e, this.props.coords)
+        // }
+        // let revealed = true
+        // this.setState({ revealed })
     }
 
     render() {
-        let cssClick = this.state.clicked ? 'clickedsquare' : 'unclickedsquare'
+        let cssClick = this.props.revealed ? 'clickedsquare' : 'unclickedsquare'
         return (
             <td >
                 <div className="square" onClick={this.handleClick}>
