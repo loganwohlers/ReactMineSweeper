@@ -13,39 +13,42 @@ class GameBoard extends React.Component {
 
   componentDidMount() {
     this.determineBoard(this.props.difficulty)
+
     this.randomMines()
     this.setNeighborCount()
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.difficulty !== this.props.difficulty) {
+      console.log(prevProps.difficulty)
+      console.log(this.props.difficulty)
+
       this.determineBoard(this.props.difficulty)
+
+      //these two need to be called to "seed" the grid
     }
-    this.randomMines()
-    this.setNeighborCount()
   }
 
   determineBoard = (difficulty) => {
-    console.log(difficulty);
-    switch (difficulty) {
-      case 'intermediate':
-        this.setState({
-          grid: Array(16).fill().map(() => new Array(16).fill(0)),
-          mines: 40
-        })
-        break;
-      case 'difficult':
-        this.setState({
-          grid: Array(16).fill().map(() => new Array(30).fill(0)),
-          mines: 99
-        })
-        break;
-      default:
-        this.setState({
-          grid: Array(9).fill().map(() => new Array(9).fill(0)),
-          mines: 10
-        })
+    let newGrid, mines;
+    if (difficulty === "intermediate") {
+      newGrid = Array(16).fill().map(() => new Array(16).fill(0))
+      mines = 40
+    } else if (difficulty === "difficult") {
+      newGrid = Array(22).fill().map(() => new Array(22).fill(0))
+      mines = 99
+    } else {
+      newGrid = Array(9).fill().map(() => new Array(9).fill(0))
+      mines = 10
     }
+
+    this.setState({
+      grid: newGrid,
+      mines
+    }, () => {
+      this.randomMines()
+      // this.setNeighborCount()
+    })
   }
 
   randomMines() {
@@ -60,7 +63,7 @@ class GameBoard extends React.Component {
         mines++
       }
     }
-    this.setState({ grid: copyGrid })
+    this.setState({ grid: copyGrid }, () => this.setNeighborCount())
   }
 
   //uses a 2d array of the 8 possible tiles around any given x,y coordinate and
@@ -211,11 +214,16 @@ class GameBoard extends React.Component {
     })
 
     return (
-      <table cellSpacing="0" id="table" style={style}>
-        <tbody>
-          {gameGrid}
-        </tbody>
-      </table>
+      <div>
+        <div className='infoMenu'>
+          Mines Left: {this.state.mines}  Time:  1:00
+        </div>
+        <table cellSpacing="0" id="table" style={style}>
+          <tbody>
+            {gameGrid}
+          </tbody>
+        </table>
+      </div>
 
     )
   }
