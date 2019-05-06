@@ -1,10 +1,12 @@
 import React from 'react';
-import GameBoard from './containers/GameBoard'
+import GameContainer from './containers/GameContainer'
+import GameMenu from './containers/GameMenu'
 
 function App() {
   return (
     <div className="App">
-      <GameBoard />
+      <GameMenu />
+      <GameContainer />
     </div>
   );
 }

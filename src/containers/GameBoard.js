@@ -7,8 +7,8 @@ class GameBoard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      grid: Array(9).fill().map(() => new Array(9).fill(0)),
-      mines: 10,
+      grid: Array(16).fill().map(() => new Array(16).fill(0)),
+      mines: 40,
       dead: false
     }
   }
@@ -162,8 +162,8 @@ class GameBoard extends React.Component {
             let revealed = false;
             let flagged = false;
             let currentValue = this.state.grid[i][j].toString()
-            currentValue.includes('*') ? revealed=true : revealed=false
-            currentValue.includes('F') ? flagged=true : flagged=false
+            currentValue.includes('*') ? revealed = true : revealed = false
+            currentValue.includes('F') ? flagged = true : flagged = false
             return (
               <Square
                 key={i + ":" + j}
