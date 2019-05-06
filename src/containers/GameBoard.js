@@ -7,8 +7,9 @@ class GameBoard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      grid: Array(6).fill().map(() => new Array(6).fill(0)),
-      mines: 10
+      grid: Array(9).fill().map(() => new Array(9).fill(0)),
+      mines: 10,
+      dead: false
     }
   }
 
@@ -86,8 +87,7 @@ class GameBoard extends React.Component {
   handleSquareClick = (e, coords) => {
     let currentValue = this.state.grid[coords[0]][coords[1]]
     if (currentValue === 'b') {
-      // loose game function
-      alert('you lose')
+      this.setState({ dead: true })
     } else if (currentValue === 0) {
       this.handleZeroSquareClick(coords)
     } else {
@@ -170,6 +170,7 @@ class GameBoard extends React.Component {
                 revealed={revealed}
                 data={currentValue.charAt(0)}
                 flagged={flagged}
+                dead={this.state.dead}
                 coords={[i, j]}
                 handleSquareClick={this.handleSquareClick}
                 handleFlagClick={this.handleFlagClick} />

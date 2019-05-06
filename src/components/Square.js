@@ -9,7 +9,8 @@ class Square extends React.Component {
   }
 
   handleFlag = (e) => {
-    if (!this.props.revealed || !this.props.flagged) {
+    e.preventDefault()
+    if (!this.props.revealed) {
       this.props.handleFlagClick(e, this.props.coords)
     }
   }
@@ -17,7 +18,7 @@ class Square extends React.Component {
   determineCSS() {
     if (this.props.flagged) {
       return 'flaggedSquare'
-    } else if (this.props.revealed) {
+    } else if (this.props.revealed || (this.props.dead && this.props.data === 'b')) {
       return 'clickedSquare'
     } else {
       return 'unclickedSquare'
@@ -27,6 +28,8 @@ class Square extends React.Component {
   determineContent() {
     if (this.props.flagged) {
       return <img className='flag' src={flag} alt='' />
+    } else if (this.props.dead && this.props.data === 'b') {
+      return <img className='mine' src={mine} alt='' />
     } else {
       return this.props.data
     }
@@ -34,16 +37,16 @@ class Square extends React.Component {
 
   render() {
     return (
-        <td >
-            <div
-              className="square"
-              onClick={this.handleClick}
-              onContextMenu={this.handleFlag}>
-                <div className={this.determineCSS()}>
-                  {this.determineContent()}
-                </div>
-            </div>
-        </td >
+      <td >
+          <div
+            className="square"
+            onClick={this.handleClick}
+            onContextMenu={this.handleFlag}>
+              <div className={this.determineCSS()}>
+                {this.determineContent()}
+              </div>
+          </div>
+      </td >
     )
   }
 }
