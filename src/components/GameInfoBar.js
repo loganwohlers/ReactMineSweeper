@@ -8,8 +8,9 @@ class GameInfoBar extends React.Component {
 
                 Mines Left: {this.props.mines}
                 <Timer
-                  active={this.props.active}
-                  time={this.props.time} />
+                    gameOver={this.props.gameOver}
+                    activeTimer={this.props.activeTimer}
+                    returnTimer={this.props.returnTimer} />
             </div>
         )
     }
