@@ -11,16 +11,20 @@ class Timer extends React.Component {
     }
 
     startTimer = () => {
+
         let time = 0
         setInterval(() => {
-            this.setState({
-                time
-            })
-            time++;
+            if (this.props.active) {
+                this.setState({
+                    time
+                })
+                time++;
+            }
         }, 1000);
     }
 
     componentDidMount() {
+
         this.startTimer();
     }
 

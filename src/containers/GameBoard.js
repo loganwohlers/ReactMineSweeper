@@ -6,8 +6,8 @@ class GameBoard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      grid: Array(9).fill().map(() => new Array(9).fill(0)),
-      mines: 10,
+      grid: [],
+      mines: 0,
       dead: false,
       active: false
     }
@@ -15,8 +15,6 @@ class GameBoard extends React.Component {
 
   componentDidMount() {
     this.determineBoard(this.props.difficulty)
-    this.randomMines()
-    this.setNeighborCount()
   }
 
   componentDidUpdate(prevProps) {
@@ -34,8 +32,10 @@ class GameBoard extends React.Component {
       newGrid = Array(22).fill().map(() => new Array(22).fill(0))
       mines = 99
     } else {
-      newGrid = Array(9).fill().map(() => new Array(9).fill(0))
-      mines = 10
+      // newGrid = Array(9).fill().map(() => new Array(9).fill(0))
+      // mines = 10
+      newGrid = Array(3).fill().map(() => new Array(3).fill(0))
+      mines = 2
     }
 
     this.setState({
@@ -47,8 +47,10 @@ class GameBoard extends React.Component {
   }
 
   randomMines() {
+
     let mines = 0
     let copyGrid = [...this.state.grid]
+
 
     while (mines < this.state.mines) {
       let x = Math.floor(Math.random() * this.state.grid.length)
@@ -123,6 +125,9 @@ class GameBoard extends React.Component {
       copyGrid[coords[0]][coords[1]] = currentValue + "*"
       this.setState({ grid: copyGrid })
     }
+    if (this.state.mines === 0) {
+      this.winCheck()
+    }
   }
 
   //this whole method needs to be cleaned up a bit
@@ -164,23 +169,49 @@ class GameBoard extends React.Component {
     this.setState({ grid: copyGrid })
   }
 
+  //filter
+  winCheck = () => {
+    if (this.state.mines === 0) {
+      for (let i = 0; i < this.state.grid.length; i++) {
+        for (let j = 0; j < this.state.grid.length; j++) {
+          let currValue = this.state.grid[i][j] + ''
+          console.log(currValue)
+          if (!(currValue.includes('*') || currValue === 'bF')) {
+            return false
+          }
+        }
+      }
+      this.winGame();
+    }
+  }
+
+  winGame = () => {
+    this.setState({ active: false })
+    alert("YOU WIN")
+  }
+
   handleFlagClick = (e, coords) => {
     let mines = this.state.mines
     let copyGrid = [...this.state.grid];
     let stringValue = copyGrid[coords[0]][coords[1]] + '';
+    //remove flag
     if (stringValue.includes('F')) {
       mines++;
       copyGrid[coords[0]][coords[1]] = stringValue.slice(0, 1)
-
+      //adding flag
     } else {
       mines--;
       copyGrid[coords[0]][coords[1]] += 'F'
     }
+
     this.setState({
       grid: copyGrid,
       mines
-    })
+    }, () => this.winCheck()
+    )
   }
+
+
 
   gameStarted = () => {
     this.setState({ active: true })
