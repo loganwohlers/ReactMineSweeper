@@ -1,6 +1,7 @@
 import React from 'react'
 import Square from '../components/Square'
 import GameInfoBar from '../components/GameInfoBar'
+import NewGameMenu from '../components/NewGameMenu'
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -214,27 +215,24 @@ class GameBoard extends React.Component {
     alert("YOU WIN")
   }
 
+  // only starts timer
   gameStarted = () => {
-    if (!this.state.dead) {
+    if (!this.state.dead && !this.state.active) {
       this.setState({ active: true })
     }
   }
 
-  restartGame = () => {
-    let currDifficulty = this.state.difficulty
-    this.setState({ dead: false, active: false }, () => {
-      this.determineBoard(currDifficulty)
+  restartGame = (difficulty) => {
+    this.setState({
+      dead: false,
+      active: false,
+     }, () => {
+      this.determineBoard(difficulty)
     })
     //reset timer
   }
 
   render() {
-    //styling for table- needs to be moved to css
-    const style = {
-      textAlign: "center",
-      tableLayout: 'fixed',
-    }
-
     //render the current board via passing in values from state grid to Square components and
     //arranging them in a table
     const gameGrid = this.state.grid.map((row, i) => {
@@ -266,13 +264,17 @@ class GameBoard extends React.Component {
       <div>
         <GameInfoBar
           mines={this.state.mines}
-          active={this.state.active}
-          restart={this.restartGame} />
-        <table cellSpacing="0" id="table" style={style} onMouseEnter={this.gameStarted} >
+          active={this.state.active} />
+        <table cellSpacing="0" id="table" onMouseEnter={this.gameStarted} >
           <tbody>
             {gameGrid}
           </tbody>
         </table>
+        {this.state.dead ?
+          <NewGameMenu
+            difficulty={this.state.difficulty}
+            restart={this.restartGame} />
+            : null}
       </div>
     )
 

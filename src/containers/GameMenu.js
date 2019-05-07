@@ -9,12 +9,12 @@ class GameMenu extends React.Component {
 
     handleChoice(event) {
         const difficulty = event.target.innerText.toLowerCase();
-        this.props.handleDifficultyClick(difficulty)
+        this.props.handleClick(difficulty)
     }
 
     render() {
         return (
-            <div className='chooseDifficulty'>
+            <div className='menu'>
                 <h3>Choose Difficulty:</h3>
                 <p onClick={this.handleChoice}>Beginner</p>{' '}
                 <p onClick={this.handleChoice}>Intermediate</p>{' '}

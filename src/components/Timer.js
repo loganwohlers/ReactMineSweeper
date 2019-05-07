@@ -11,7 +11,6 @@ class Timer extends React.Component {
   componentDidUpdate(prevProps) {
     if (!prevProps.active && this.props.active) {
       this.startTimer()
-      console.log('timer');
     } else if (!prevProps.active){
       clearInterval(this.interval)
     }

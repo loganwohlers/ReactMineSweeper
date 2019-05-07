@@ -23,7 +23,7 @@ class App extends React.Component {
           :
           <GameMenu
           difficulty={this.state.difficulty}
-          handleDifficultyClick={this.handleDifficultyClick} />}
+          handleClick={this.handleDifficultyClick} />}
       </div>
     )
   }

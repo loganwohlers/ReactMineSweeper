@@ -8,9 +8,6 @@ class GameInfoBar extends React.Component {
 
                 Mines Left: {this.props.mines}
                 <Timer active={this.props.active} />
-                <button onClick={this.props.restart}>
-                    RESTART
-                </button>
             </div>
         )
     }
