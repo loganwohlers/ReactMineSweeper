@@ -36,6 +36,23 @@ class Timer extends React.Component {
         return <div>Time: {this.state.time}</div>
     }
 
+    // handleClick = () => {
+    //     this.setState(state => {
+    //         if (state.status) {
+    //             clearInterval(this.timer);
+    //         } else {
+    //             const startTime = Date.now() - this.state.runningTime;
+    //             this.timer = setInterval(() => {
+    //                 this.setState({ runningTime: Date.now() - startTime });
+    //             });
+    //         }
+    //         return { status: !state.status };
+    //     });
+    // };
+    // handleReset = () => {
+    //     this.setState({ runningTime: 0, status: false });
+    // };
+
 
 
 }
