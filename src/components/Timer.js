@@ -5,27 +5,31 @@ class Timer extends React.Component {
         super()
         this.state = {
             time: 0,
-            isOn: false,
         }
-
     }
+
+    componentDidUpdate(prevProps) {
+
+        if (prevProps.active !== this.props.active) {
+            this.startTimer()
+
+        } else {
+
+        }
+    }
+
+    //     let intervalId = setInterval(timer, 10000);
+    // clearInterval(intervalId);
 
     startTimer = () => {
-
         let time = 0
-        setInterval(() => {
-            if (this.props.active) {
-                this.setState({
-                    time
-                })
-                time++;
-            }
-        }, 1000);
-    }
+        let interval = setInterval(() => {
+            this.setState({
+                time
+            })
+            time++;
+        }, 1000)
 
-    componentDidMount() {
-
-        this.startTimer();
     }
 
     render() {

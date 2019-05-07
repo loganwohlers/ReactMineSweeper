@@ -18,7 +18,7 @@ class GameBoard extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.difficulty !== this.props.difficulty) {
+    if (prevProps.difficulty !== this.props.difficulty && this.state.active === false) {
       this.determineBoard(this.props.difficulty)
     }
   }
@@ -117,7 +117,10 @@ class GameBoard extends React.Component {
   handleSquareClick = (e, coords) => {
     let currentValue = this.state.grid[coords[0]][coords[1]]
     if (currentValue === 'b') {
-      this.setState({ dead: true })
+      this.setState({
+        dead: true,
+        active: false
+      })
     } else if (currentValue === 0) {
       this.handleZeroSquareClick(coords)
     } else {
@@ -165,7 +168,6 @@ class GameBoard extends React.Component {
         }
       }
     }
-
     this.setState({ grid: copyGrid })
   }
 
@@ -211,10 +213,18 @@ class GameBoard extends React.Component {
     )
   }
 
-
-
   gameStarted = () => {
     this.setState({ active: true })
+  }
+
+  restartGame = () => {
+    console.log("Game restart!!")
+    let currDifficulty = this.state.difficulty
+    this.setState({ dead: false }, () => {
+      this.determineBoard(currDifficulty)
+    })
+    //reset timer
+
   }
 
   render() {
@@ -224,7 +234,7 @@ class GameBoard extends React.Component {
       tableLayout: 'fixed',
     }
 
-    //render the current borad via passing in values from state grid to Square components and
+    //render the current board via passing in values from state grid to Square components and
     //arranging them in a table
     const gameGrid = this.state.grid.map((row, i) => {
       return (
@@ -253,7 +263,7 @@ class GameBoard extends React.Component {
 
     return (
       <div>
-        <GameInfoBar mines={this.state.mines} active={this.state.active} />
+        <GameInfoBar mines={this.state.mines} active={this.state.active} restart={this.restartGame} />
         <table cellSpacing="0" id="table" style={style} onMouseEnter={this.gameStarted} >
           <tbody>
             {gameGrid}
