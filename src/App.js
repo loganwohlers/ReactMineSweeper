@@ -1,5 +1,5 @@
 import React from 'react';
-import GameContainer from './containers/GameContainer'
+import GameBoard from './containers/GameBoard'
 import GameMenu from './containers/GameMenu'
 
 class App extends React.Component {
@@ -12,7 +12,7 @@ class App extends React.Component {
   }
 
   handleDifficultyClick(difficulty) {
-    this.setState({difficulty})
+    this.setState({ difficulty })
   }
 
   render() {
@@ -21,10 +21,9 @@ class App extends React.Component {
         <GameMenu
           difficulty={this.state.difficulty}
           handleDifficultyClick={this.handleDifficultyClick} />
-        <GameContainer
-          difficulty={this.state.difficulty} />
+        <GameBoard difficulty={this.props.difficulty} />
       </div>
-    );
+    )
   }
 }
 

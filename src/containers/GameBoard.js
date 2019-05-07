@@ -1,5 +1,6 @@
 import React from 'react'
 import Square from '../components/Square'
+import GameInfoBar from '../components/GameInfoBar'
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -13,7 +14,6 @@ class GameBoard extends React.Component {
 
   componentDidMount() {
     this.determineBoard(this.props.difficulty)
-
     this.randomMines()
     this.setNeighborCount()
   }
@@ -215,9 +215,7 @@ class GameBoard extends React.Component {
 
     return (
       <div>
-        <div className='infoMenu'>
-          Mines Left: {this.state.mines}  Time:  1:00
-        </div>
+        <GameInfoBar />
         <table cellSpacing="0" id="table" style={style}>
           <tbody>
             {gameGrid}
