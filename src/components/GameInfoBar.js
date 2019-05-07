@@ -7,7 +7,9 @@ class GameInfoBar extends React.Component {
             <div className='infoMenu'>
 
                 Mines Left: {this.props.mines}
-                <Timer active={this.props.active} />
+                <Timer
+                  active={this.props.active}
+                  time={this.props.time} />
             </div>
         )
     }

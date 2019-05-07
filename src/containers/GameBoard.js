@@ -10,7 +10,8 @@ class GameBoard extends React.Component {
       grid: [],
       mines: 0,
       dead: false,
-      active: false
+      active: false,
+      time: 0
     }
   }
 
@@ -206,13 +207,9 @@ class GameBoard extends React.Component {
           }
         }
       }
-      this.winGame();
+      this.setState({ active: false })
+      return true
     }
-  }
-
-  winGame = () => {
-    this.setState({ active: false })
-    alert("YOU WIN")
   }
 
   // only starts timer
@@ -232,7 +229,14 @@ class GameBoard extends React.Component {
     //reset timer
   }
 
+  returnTime = (time) => {
+    if (this.state.dead || this.winCheck()) {
+      // this.setState({time})
+    }
+  }
+
   render() {
+    console.log(this.time);
     //render the current board via passing in values from state grid to Square components and
     //arranging them in a table
     const gameGrid = this.state.grid.map((row, i) => {
@@ -264,16 +268,18 @@ class GameBoard extends React.Component {
       <div>
         <GameInfoBar
           mines={this.state.mines}
-          active={this.state.active} />
+          active={this.state.active}
+          time={this.returnTime} />
         <table cellSpacing="0" id="table" onMouseEnter={this.gameStarted} >
           <tbody>
             {gameGrid}
           </tbody>
         </table>
-        {this.state.dead ?
+        {this.state.dead || this.winCheck() ?
           <NewGameMenu
             difficulty={this.state.difficulty}
-            restart={this.restartGame} />
+            restart={this.restartGame}
+            time={100} />
             : null}
       </div>
     )

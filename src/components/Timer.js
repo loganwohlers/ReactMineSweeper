@@ -1,8 +1,8 @@
 import React from 'react'
 
 class Timer extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       time: 0,
     }
@@ -12,6 +12,7 @@ class Timer extends React.Component {
     if (!prevProps.active && this.props.active) {
       this.startTimer()
     } else if (!prevProps.active){
+      this.props.time(this.state.time)
       clearInterval(this.interval)
     }
   }
@@ -27,9 +28,11 @@ class Timer extends React.Component {
   }
 
   render() {
-    return <div > Time: {
+    return (
+      <div > Time: {
       this.state.time
     } < /div>
+  )
   }
 }
 export default Timer;

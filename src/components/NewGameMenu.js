@@ -6,9 +6,8 @@ class NewGameMenu extends React.Component {
     render() {
         return (
             <div className='menu'>
-              <button onClick={this.props.restart}>
-                  RESTART
-              </button>
+              {}
+              <div>FINAL SCORE: {this.props.time}</div>
               <GameMenu
                 handleClick={this.props.restart}
                 difficulty={this.props.difficulty} />
