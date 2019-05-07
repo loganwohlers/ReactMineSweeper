@@ -9,9 +9,9 @@ class GameBoard extends React.Component {
     this.state = {
       grid: [],
       mines: 0,
-      dead: false,
-      active: false,
-      time: 0
+      gameOver: false,
+      time: 0,
+      activeTimer: false
     }
   }
 
@@ -111,13 +111,13 @@ class GameBoard extends React.Component {
 
   //breadth first search to "click" all suitable 0 tiles and reveal all suitable # tiles
   handleSquareClick = (coords) => {
-    if (this.state.active) {
+    if (!this.state.gameOver) {
       let currentValue = this.state.grid[coords[0]][coords[1]]
       // bomb click
       if (currentValue === 'b') {
         this.setState({
-          dead: true,
-          active: false
+          gameOver: true,
+          activeTimer: false
         })
         // empty square click
       } else if (currentValue === 0) {
@@ -173,7 +173,7 @@ class GameBoard extends React.Component {
   }
 
   handleFlagClick = (e, coords) => {
-    if (this.state.active) {
+    if (!this.state.gameOver) {
       let mines = this.state.mines
       let copyGrid = [...this.state.grid];
       let stringValue = copyGrid[coords[0]][coords[1]] + '';
@@ -213,30 +213,29 @@ class GameBoard extends React.Component {
   }
 
   // only starts timer
-  gameStarted = () => {
-    if (!this.state.dead && !this.state.active) {
-      this.setState({ active: true })
+  startTimer = () => {
+    if (!this.state.gameOver) {
+      this.setState({ activeTimer: true })
     }
   }
 
   restartGame = (difficulty) => {
     this.setState({
-      dead: false,
-      active: false,
-     }, () => {
+      gameOver: false,
+      activeTimer: true,
+    }, () => {
       this.determineBoard(difficulty)
     })
     //reset timer
   }
 
-  returnTime = (time) => {
-    if (this.state.dead || this.winCheck()) {
-      // this.setState({time})
+  returnTimer = (time) => {
+    if (this.state.gameOver) {
+      this.setState({ time }, () => console.log(this.state.time))
     }
   }
 
   render() {
-    console.log(this.time);
     //render the current board via passing in values from state grid to Square components and
     //arranging them in a table
     const gameGrid = this.state.grid.map((row, i) => {
@@ -254,7 +253,7 @@ class GameBoard extends React.Component {
                 revealed={revealed}
                 data={currentValue.charAt(0)}
                 flagged={flagged}
-                dead={this.state.dead}
+                gameOver={this.state.gameOver}
                 coords={[i, j]}
                 handleSquareClick={this.handleSquareClick}
                 handleFlagClick={this.handleFlagClick} />
@@ -268,19 +267,20 @@ class GameBoard extends React.Component {
       <div>
         <GameInfoBar
           mines={this.state.mines}
-          active={this.state.active}
-          time={this.returnTime} />
-        <table cellSpacing="0" id="table" onMouseEnter={this.gameStarted} >
+          gameOver={this.state.gameOver}
+          activeTimer={this.state.activeTimer}
+          returnTimer={this.returnTimer} />
+        <table cellSpacing="0" id="table" onMouseEnter={this.startTimer} >
           <tbody>
             {gameGrid}
           </tbody>
         </table>
-        {this.state.dead || this.winCheck() ?
+        {this.state.gameOver ?
           <NewGameMenu
             difficulty={this.state.difficulty}
             restart={this.restartGame}
-            time={100} />
-            : null}
+            time={this.state.time} />
+          : null}
       </div>
     )
 
