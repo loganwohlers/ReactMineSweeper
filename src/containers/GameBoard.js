@@ -8,7 +8,8 @@ class GameBoard extends React.Component {
     this.state = {
       grid: Array(9).fill().map(() => new Array(9).fill(0)),
       mines: 10,
-      dead: false
+      dead: false,
+      active: false
     }
   }
 
@@ -20,12 +21,7 @@ class GameBoard extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.difficulty !== this.props.difficulty) {
-      console.log(prevProps.difficulty)
-      console.log(this.props.difficulty)
-
       this.determineBoard(this.props.difficulty)
-
-      //these two need to be called to "seed" the grid
     }
   }
 
@@ -47,7 +43,6 @@ class GameBoard extends React.Component {
       mines
     }, () => {
       this.randomMines()
-      // this.setNeighborCount()
     })
   }
 
@@ -187,7 +182,12 @@ class GameBoard extends React.Component {
     })
   }
 
+  gameStarted = () => {
+    this.setState({ active: true })
+  }
+
   render() {
+    //styling for table- needs to be moved to css
     const style = {
       textAlign: "center",
       tableLayout: 'fixed',
@@ -222,15 +222,15 @@ class GameBoard extends React.Component {
 
     return (
       <div>
-        <GameInfoBar mines={this.state.mines} />
-        <table cellSpacing="0" id="table" style={style}>
+        <GameInfoBar mines={this.state.mines} active={this.state.active} />
+        <table cellSpacing="0" id="table" style={style} onMouseEnter={this.gameStarted} >
           <tbody>
             {gameGrid}
           </tbody>
         </table>
       </div>
-
     )
+
   }
 }
 

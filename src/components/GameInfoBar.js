@@ -1,10 +1,12 @@
 import React from 'react'
+import Timer from './Timer'
 
 class GameInfoBar extends React.Component {
     render() {
         return (
             <div className='infoMenu'>
-                Mines Left: {this.props.mines}  Time:  1:00
+                Mines Left: {this.props.mines}
+                {this.props.active ? <Timer /> : null}
             </div>
         )
     }
