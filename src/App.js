@@ -21,7 +21,7 @@ class App extends React.Component {
         <GameMenu
           difficulty={this.state.difficulty}
           handleDifficultyClick={this.handleDifficultyClick} />
-        <GameBoard difficulty={this.props.difficulty} />
+        <GameBoard difficulty={this.state.difficulty} />
       </div>
     )
   }

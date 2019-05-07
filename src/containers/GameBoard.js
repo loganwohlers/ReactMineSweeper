@@ -170,14 +170,21 @@ class GameBoard extends React.Component {
   }
 
   handleFlagClick = (e, coords) => {
+    let mines = this.state.mines
     let copyGrid = [...this.state.grid];
     let stringValue = copyGrid[coords[0]][coords[1]] + '';
     if (stringValue.includes('F')) {
+      mines++;
       copyGrid[coords[0]][coords[1]] = stringValue.slice(0, 1)
+
     } else {
+      mines--;
       copyGrid[coords[0]][coords[1]] += 'F'
     }
-    this.setState({ grid: copyGrid })
+    this.setState({
+      grid: copyGrid,
+      mines
+    })
   }
 
   render() {
@@ -215,7 +222,7 @@ class GameBoard extends React.Component {
 
     return (
       <div>
-        <GameInfoBar />
+        <GameInfoBar mines={this.state.mines} />
         <table cellSpacing="0" id="table" style={style}>
           <tbody>
             {gameGrid}
