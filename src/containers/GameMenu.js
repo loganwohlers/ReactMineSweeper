@@ -23,4 +23,5 @@ class GameMenu extends React.Component {
         )
     }
 }
+
 export default GameMenu;

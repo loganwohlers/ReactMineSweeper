@@ -4,8 +4,8 @@ import mine from '../assets/mine.png'
 
 class Square extends React.Component {
 
-  handleClick = (e) => {
-    this.props.handleSquareClick(e, this.props.coords)
+  handleClick = () => {
+    this.props.handleSquareClick(this.props.coords)
   }
 
   handleFlag = (e) => {

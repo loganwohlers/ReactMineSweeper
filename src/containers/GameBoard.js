@@ -32,10 +32,8 @@ class GameBoard extends React.Component {
       newGrid = Array(22).fill().map(() => new Array(22).fill(0))
       mines = 99
     } else {
-      // newGrid = Array(9).fill().map(() => new Array(9).fill(0))
-      // mines = 10
-      newGrid = Array(3).fill().map(() => new Array(3).fill(0))
-      mines = 2
+      newGrid = Array(9).fill().map(() => new Array(9).fill(0))
+      mines = 10
     }
 
     this.setState({
@@ -47,10 +45,8 @@ class GameBoard extends React.Component {
   }
 
   randomMines() {
-
     let mines = 0
     let copyGrid = [...this.state.grid]
-
 
     while (mines < this.state.mines) {
       let x = Math.floor(Math.random() * this.state.grid.length)
@@ -61,6 +57,34 @@ class GameBoard extends React.Component {
       }
     }
     this.setState({ grid: copyGrid }, () => this.setNeighborCount())
+  }
+
+  //reassigns the values in the state grid to accuratly reflect the number of mines contained in neighboring tiles
+  setNeighborCount() {
+    let copyGrid = [...this.state.grid]
+    for (var i = 0; i < copyGrid.length; i++) {
+      for (var j = 0; j < copyGrid.length; j++) {
+        if (copyGrid[i][j] !== 'b') {
+          copyGrid[i][j] = this.neighborMines(i, j, copyGrid)
+        }
+      }
+    }
+    this.setState({ grid: copyGrid })
+  }
+
+  //checks- through a copy of the current state grid- the value of all neighboring tiles and returns # of mines
+  neighborMines(x, y, copyGrid) {
+    let bombCount = 0
+    let poss = this.generatePossibilities(x, y)
+    for (var i = 0; i < poss.length; i++) {
+      let xx = poss[i][0]
+      let yy = poss[i][1]
+      let coords = (copyGrid[xx][yy])
+      if (coords === 'b') {
+        bombCount++
+      }
+    }
+    return bombCount
   }
 
   //uses a 2d array of the 8 possible tiles around any given x,y coordinate and
@@ -83,47 +107,20 @@ class GameBoard extends React.Component {
     })
   }
 
-  //checks- through a copy of the current state grid- the value of all neighboring tiles and returns # of mines
-  neighborMines(x, y, copyGrid) {
-    let bombCount = 0
-    let poss = this.generatePossibilities(x, y)
-    for (var i = 0; i < poss.length; i++) {
-      let xx = poss[i][0]
-      let yy = poss[i][1]
-      let coords = (copyGrid[xx][yy])
-      if (coords === 'b') {
-        bombCount++
-      }
-    }
-    return bombCount
-  }
-
-  //reassigns the values in the state grid to accuratly reflect the number of mines contained in neighboring tiles
-  setNeighborCount() {
-    let copyGrid = [...this.state.grid]
-    let updateGrid = [...this.state.grid]
-    for (var i = 0; i < copyGrid.length; i++) {
-      for (var j = 0; j < copyGrid.length; j++) {
-        if (copyGrid[i][j] !== 'b') {
-          updateGrid[i][j] = this.neighborMines(i, j, copyGrid)
-        }
-      }
-    }
-    this.setState({ grid: updateGrid })
-  }
-
   //breadth first search to "click" all suitable 0 tiles and reveal all suitable # tiles
-
-  handleSquareClick = (e, coords) => {
+  handleSquareClick = (coords) => {
     if (this.state.active) {
       let currentValue = this.state.grid[coords[0]][coords[1]]
+      // bomb click
       if (currentValue === 'b') {
         this.setState({
           dead: true,
           active: false
         })
+        // empty square click
       } else if (currentValue === 0) {
         this.handleZeroSquareClick(coords)
+        // number square click
       } else {
         let copyGrid = [...this.state.grid]
         copyGrid[coords[0]][coords[1]] = currentValue + "*"
@@ -146,31 +143,54 @@ class GameBoard extends React.Component {
       let current = queue.pop()
 
       if (copyGrid[current[0]][current[1]] === 0) {
+        // grid shows first character - need blank space
         copyGrid[current[0]][current[1]] = ' *'
       }
 
       //grab all possibile neighboring tiles
       let poss = this.generatePossibilities(current[0], current[1])
 
-      // filter possibilities for numbe tile and reveal them
-      let bordering = poss.filter(n => copyGrid[n[0]][n[1]] !== 0)
-
-      bordering.forEach(ss => {
+      // filter possibilities for number tile and reveal them
+      let neighborNums = poss.filter(n => copyGrid[n[0]][n[1]] !== 0)
+      neighborNums.forEach(ss => {
         let currValue = copyGrid[ss[0]][ss[1]]
         // * is revealed
         copyGrid[ss[0]][ss[1]] = currValue + "*"
       })
 
       //filter for suitable 0/blank tiles and visit them on search
-      let neighbors = poss.filter(n => copyGrid[n[0]][n[1]] === 0)
-      for (let i = 0; i < neighbors.length; i++) {
-        if (!visited[neighbors[i]]) {
-          queue.push(neighbors[i])
-          visited[neighbors[i]] = true
+      let neighborBlanks = poss.filter(n => copyGrid[n[0]][n[1]] === 0)
+      for (let i = 0; i < neighborBlanks.length; i++) {
+        if (!visited[neighborBlanks[i]]) {
+          queue.push(neighborBlanks[i])
+          visited[neighborBlanks[i]] = true
         }
       }
     }
     this.setState({ grid: copyGrid })
+  }
+
+  handleFlagClick = (e, coords) => {
+    if (this.state.active) {
+      let mines = this.state.mines
+      let copyGrid = [...this.state.grid];
+      let stringValue = copyGrid[coords[0]][coords[1]] + '';
+      //remove flag
+      if (stringValue.includes('F')) {
+        mines++;
+        copyGrid[coords[0]][coords[1]] = stringValue.slice(0, 1)
+        //adding flag
+      } else {
+        mines--;
+        copyGrid[coords[0]][coords[1]] += 'F'
+      }
+
+      this.setState({
+        grid: copyGrid,
+        mines
+      }, () => this.winCheck()
+      )
+    }
   }
 
   //filter
@@ -194,39 +214,18 @@ class GameBoard extends React.Component {
     alert("YOU WIN")
   }
 
-  handleFlagClick = (e, coords) => {
-    let mines = this.state.mines
-    let copyGrid = [...this.state.grid];
-    let stringValue = copyGrid[coords[0]][coords[1]] + '';
-    //remove flag
-    if (stringValue.includes('F')) {
-      mines++;
-      copyGrid[coords[0]][coords[1]] = stringValue.slice(0, 1)
-      //adding flag
-    } else {
-      mines--;
-      copyGrid[coords[0]][coords[1]] += 'F'
-    }
-
-    this.setState({
-      grid: copyGrid,
-      mines
-    }, () => this.winCheck()
-    )
-  }
-
   gameStarted = () => {
-    this.setState({ active: true })
+    if (!this.state.dead) {
+      this.setState({ active: true })
+    }
   }
 
   restartGame = () => {
-    console.log("Game restart!!")
     let currDifficulty = this.state.difficulty
-    this.setState({ dead: false }, () => {
+    this.setState({ dead: false, active: false }, () => {
       this.determineBoard(currDifficulty)
     })
     //reset timer
-
   }
 
   render() {
@@ -265,7 +264,10 @@ class GameBoard extends React.Component {
 
     return (
       <div>
-        <GameInfoBar mines={this.state.mines} active={this.state.active} restart={this.restartGame} />
+        <GameInfoBar
+          mines={this.state.mines}
+          active={this.state.active}
+          restart={this.restartGame} />
         <table cellSpacing="0" id="table" style={style} onMouseEnter={this.gameStarted} >
           <tbody>
             {gameGrid}

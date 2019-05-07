@@ -6,7 +6,7 @@ class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      difficulty: 'beginner'
+      difficulty: null
     }
     this.handleDifficultyClick = this.handleDifficultyClick.bind(this);
   }
@@ -18,10 +18,12 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <GameMenu
+        {this.state.difficulty ?
+          <GameBoard difficulty={this.state.difficulty} />
+          :
+          <GameMenu
           difficulty={this.state.difficulty}
-          handleDifficultyClick={this.handleDifficultyClick} />
-        <GameBoard difficulty={this.state.difficulty} />
+          handleDifficultyClick={this.handleDifficultyClick} />}
       </div>
     )
   }
