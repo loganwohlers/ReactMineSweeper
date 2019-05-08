@@ -10,10 +10,10 @@
 User.destroy_all
 Game.destroy_all
 
-user1 = User.create(username: 'Claire')
-user2 = User.create(username: 'Logan')
-user3 = User.create(username: 'Brian')
-user4 = User.create(username: 'Chris')
+user1 = User.create(username: 'claire')
+user2 = User.create(username: 'logan')
+user3 = User.create(username: 'brian')
+user4 = User.create(username: 'chris')
 
 game1 = Game.create(user: user1, difficulty: 'beginner', score: 20)
 game2 = Game.create(user: user3, difficulty: 'intermediate', score: 30)
