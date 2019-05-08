@@ -26,7 +26,7 @@ class LeaderBoard extends React.Component {
 
     }
 
-
+    // name = { ss.user.username }
     render() {
         console.log(this.state.scores)
         return (
@@ -34,7 +34,12 @@ class LeaderBoard extends React.Component {
                 TEST!!!!!
                 <ul>
                     {this.state.scores.map((ss, idx) => {
-                        return <Score key={idx} score={ss} />
+
+                        return <Score
+                            key={idx}
+                            score={ss.score}
+                            name={ss.user.username}
+                            difficulty={ss.difficulty} />
                     })}
                 </ul>
             </div>
