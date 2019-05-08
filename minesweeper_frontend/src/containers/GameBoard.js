@@ -20,12 +20,6 @@ class GameBoard extends React.Component {
     this.determineBoard(this.props.difficulty)
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.difficulty !== this.props.difficulty && this.state.active === false) {
-  //     this.determineBoard(this.props.difficulty)
-  //   }
-  // }
-
   determineBoard = (difficulty) => {
     let newGrid, mines;
     if (difficulty === "intermediate") {
@@ -115,24 +109,25 @@ class GameBoard extends React.Component {
   handleSquareClick = (coords) => {
     if (!this.state.gameOver) {
       let currentValue = this.state.grid[coords[0]][coords[1]]
+      let newGrid;
       // bomb click
       if (currentValue === 'b') {
+        console.log("BOMB")
         this.setState({
           gameOver: true,
           activeTimer: false
         })
+        return null;
+
         // empty square click
       } else if (currentValue === 0) {
-        this.handleZeroSquareClick(coords)
+        newGrid = this.handleZeroSquareClick(coords)
         // number square click
       } else {
-        let copyGrid = [...this.state.grid]
-        copyGrid[coords[0]][coords[1]] = currentValue + "*"
-        this.setState({ grid: copyGrid })
+        newGrid = [...this.state.grid]
+        newGrid[coords[0]][coords[1]] = currentValue + "*"
       }
-      if (this.state.mines === 0) {
-        this.winCheck()
-      }
+      this.setState({ grid: newGrid }, () => this.winCheck())
     }
   }
 
@@ -171,7 +166,7 @@ class GameBoard extends React.Component {
         }
       }
     }
-    this.setState({ grid: copyGrid })
+    return copyGrid;
   }
 
   handleFlagClick = (e, coords) => {
@@ -197,21 +192,20 @@ class GameBoard extends React.Component {
     }
   }
 
-  //filter
   winCheck = () => {
     if (this.state.mines === 0) {
       for (let i = 0; i < this.state.grid.length; i++) {
         for (let j = 0; j < this.state.grid.length; j++) {
           let currValue = this.state.grid[i][j] + ''
-          console.log(currValue)
           if (!(currValue.includes('*') || currValue === 'bF')) {
             return false
           }
         }
       }
-      this.setState({ active: false })
+      this.setState({ active: false, gameOver: true })
       return true
     }
+    return false;
   }
 
   // only starts timer
@@ -279,6 +273,7 @@ class GameBoard extends React.Component {
         </table>
         {this.state.gameOver ?
           <NewGameMenu
+            won={this.winCheck()}
             difficulty={this.state.difficulty}
             restart={this.restartGame}
             time={this.state.time} />
