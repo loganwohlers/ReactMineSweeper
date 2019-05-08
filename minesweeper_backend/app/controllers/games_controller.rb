@@ -13,7 +13,7 @@ class GamesController < ApplicationController
         score: params["score"],
         difficulty: params["difficulty"]
         )
-      
+
       render json: @game
   end
 

@@ -18,7 +18,9 @@ class SaveScore extends React.Component {
       body: JSON.stringify({ 'username': username })
     })
     .then((res) => res.json())
-    .then(data => { user_id = data.id })
+    .then(data => {
+      user_id = data.id
+    })
 
     // CREATE GAME
     .then(() => {
@@ -34,12 +36,12 @@ class SaveScore extends React.Component {
           'difficulty': difficulty
         })
       })
-    })
+    }).then(()=>console.log('submitted'))
   }
 
   render() {
     return (
-      <div>
+      <div className='finalScore'>
         Submit score?
         <form onSubmit={this.updateDbScore}>
           <label>

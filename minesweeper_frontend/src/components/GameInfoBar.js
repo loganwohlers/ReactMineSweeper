@@ -4,7 +4,7 @@ import Timer from './Timer'
 class GameInfoBar extends React.Component {
   render() {
     return (
-      <div className='menu'>
+      <div className='menu' id='infoBar'>
         Mines Left: {this.props.mines}
         <Timer
           gameOver={this.props.gameOver}

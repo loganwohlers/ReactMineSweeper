@@ -43,19 +43,24 @@ class LeaderBoard extends React.Component {
     })
   }
 
+
+
   render() {
     return (
-      <div className='leaderboard'>
-        <Score
-          scores={this.state.beginner}
-          difficulty='beginner' />
-        <Score
-          scores={this.state.intermediate}
-          difficulty='intermediate' />
-        <Score
-          scores={this.state.difficult}
-          difficulty='difficult' />
-      </div >
+      <div>
+        <h2 id='leaderTitle'>LEADERBOARD</h2>
+        <div className='leaderboard'>
+          <Score
+            scores={this.state.beginner}
+            difficulty='beginner' />
+          <Score
+            scores={this.state.intermediate}
+            difficulty='intermediate' />
+          <Score
+            scores={this.state.difficult}
+            difficulty='difficult' />
+        </div >
+      </div>
     )
   }
 }
