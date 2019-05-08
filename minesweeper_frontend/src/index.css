@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Gugi');
+@import url("https://fonts.googleapis.com/css?family=Gugi");
 
 * {
-  font-family: 'Gugi', cursive;
+  font-family: "Gugi", cursive;
 }
 /* GAME MENU */
 
@@ -18,7 +18,7 @@
 
 .diffButtons:hover {
   cursor: pointer;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 /* LEADERBOARD */
@@ -30,24 +30,34 @@
   display: flex;
 }
 
+#scoreTable {
+  margin: auto;
+  height: auto;
+  width: auto;
+  text-align: center;
+}
+
+#scoreTable td {
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-bottom: 10px;
+}
+
 .score {
   flex: 1;
   text-align: center;
 }
 
-ol {
-  padding-inline-start: 100px;
+.scoreList {
+  /* padding-inline-start: 100px; */
+  list-style: none;
+  text-align: center;
 }
 
 span {
   padding: 20px;
   text-align: left;
 }
-
-span .scoreName {
-  text-align: center;
-}
-
 
 /* GAME */
 
@@ -89,7 +99,7 @@ span .scoreName {
   width: 25px;
 }
 
-#table {
+#gameBoard {
   margin: auto;
   height: auto;
   width: auto;

@@ -266,7 +266,7 @@ class GameBoard extends React.Component {
           gameOver={this.state.gameOver}
           activeTimer={this.state.activeTimer}
           returnTimer={this.returnTimer} />
-        <table cellSpacing="0" id="table" onMouseEnter={this.startTimer} >
+        <table cellSpacing="0" id="gameBoard" onMouseEnter={this.startTimer} >
           <tbody>
             {gameGrid}
           </tbody>
