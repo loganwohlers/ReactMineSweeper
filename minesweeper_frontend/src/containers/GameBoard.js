@@ -11,7 +11,8 @@ class GameBoard extends React.Component {
       mines: 0,
       gameOver: false,
       time: 0,
-      activeTimer: false
+      activeTimer: false,
+      difficulty: ''
     }
   }
 
@@ -19,11 +20,11 @@ class GameBoard extends React.Component {
     this.determineBoard(this.props.difficulty)
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.difficulty !== this.props.difficulty && this.state.active === false) {
-      this.determineBoard(this.props.difficulty)
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.difficulty !== this.props.difficulty && this.state.active === false) {
+  //     this.determineBoard(this.props.difficulty)
+  //   }
+  // }
 
   determineBoard = (difficulty) => {
     let newGrid, mines;
@@ -40,7 +41,8 @@ class GameBoard extends React.Component {
 
     this.setState({
       grid: newGrid,
-      mines
+      mines,
+      difficulty
     }, () => {
       this.randomMines()
     })
