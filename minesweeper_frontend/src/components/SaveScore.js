@@ -7,6 +7,8 @@ class SaveScore extends React.Component {
     let { time, difficulty } = this.props;
     let user_id;
     let username = e.target.children[0].children[0].value;
+
+    // FIND OR CREATE USER
     fetch('http://localhost:3000/users', {
       method: "POST",
       headers: {
@@ -15,26 +17,24 @@ class SaveScore extends React.Component {
       },
       body: JSON.stringify({ 'username': username })
     })
-      .then((res) => res.json())
-      .then(data => {
-        user_id = data.id
-      })
-      .then(() => {
-        fetch('http://localhost:3000/games', {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify({
-            'user_id': user_id,
-            'score': time,
-            'difficulty': difficulty
-          })
+    .then((res) => res.json())
+    .then(data => { user_id = data.id })
+
+    // CREATE GAME
+    .then(() => {
+      fetch('http://localhost:3000/games', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          'user_id': user_id,
+          'score': time,
+          'difficulty': difficulty
         })
-        // .then((res) => res.json())
-        // .then(data => console.log(data))
       })
+    })
   }
 
   render() {

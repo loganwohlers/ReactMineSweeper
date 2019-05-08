@@ -113,7 +113,6 @@ class GameBoard extends React.Component {
       let newGrid;
       // bomb click
       if (currentValue === 'b') {
-        console.log("BOMB")
         this.setState({
           gameOver: true,
           activeTimer: false
@@ -228,7 +227,7 @@ class GameBoard extends React.Component {
 
   returnTimer = (time) => {
     if (this.state.gameOver) {
-      this.setState({ time }, () => console.log(this.state.time))
+      this.setState({ time })
     }
   }
 

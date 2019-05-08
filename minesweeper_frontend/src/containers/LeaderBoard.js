@@ -1,7 +1,6 @@
 import React from 'react'
 import Score from '../components/Score'
 
-
 class LeaderBoard extends React.Component {
     constructor(props) {
         super(props)
@@ -45,9 +44,7 @@ class LeaderBoard extends React.Component {
 
     }
 
-    // name = { ss.user.username }
     render() {
-        console.log(this.state.beginner)
         return (
             <div>
                 <Score scores={this.state.beginner} />
@@ -61,4 +58,4 @@ class LeaderBoard extends React.Component {
 
 export default LeaderBoard
     // < ul >
-    // 
+    //

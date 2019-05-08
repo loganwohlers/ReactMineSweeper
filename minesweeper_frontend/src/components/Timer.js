@@ -10,10 +10,8 @@ class Timer extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.activeTimer && this.props.activeTimer) {
-            console.log('starting timer')
             this.startTimer()
         } else if (!prevProps.gameOver && this.props.gameOver) {
-            console.log("gameover")
             this.props.returnTimer(this.state.time)
             clearInterval(this.interval)
         }
