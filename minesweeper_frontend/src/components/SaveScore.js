@@ -1,9 +1,6 @@
 import React from 'react'
 
 class SaveScore extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   updateDbScore = (e) => {
     e.preventDefault()
