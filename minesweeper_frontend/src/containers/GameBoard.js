@@ -10,6 +10,7 @@ class GameBoard extends React.Component {
       grid: [],
       mines: 0,
       gameOver: false,
+      won: false,
       time: 0,
       activeTimer: false,
       difficulty: ''
@@ -202,7 +203,7 @@ class GameBoard extends React.Component {
           }
         }
       }
-      this.setState({ active: false, gameOver: true })
+      this.setState({ active: false, gameOver: true, won: true })
       return true
     }
     return false;
@@ -273,7 +274,7 @@ class GameBoard extends React.Component {
         </table>
         {this.state.gameOver ?
           <NewGameMenu
-            won={this.winCheck()}
+            won={this.state.won}
             difficulty={this.state.difficulty}
             restart={this.restartGame}
             time={this.state.time} />
