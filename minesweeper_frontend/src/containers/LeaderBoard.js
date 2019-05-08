@@ -6,7 +6,9 @@ class LeaderBoard extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            scores: []
+            beginner: [],
+            intermediate: [],
+            difficult: []
         }
     }
 
@@ -19,32 +21,44 @@ class LeaderBoard extends React.Component {
             }
         })
             .then((res) => res.json())
-            .then(scores => this.setState({ scores }))
+            .then(scores => {
+                this.setScoresState(scores)
+            })
     }
 
-    listScores = () => {
+    setScoresState = (scores) => {
+        let scoreLevels = {
+            beginner: [],
+            intermediate: [],
+            difficult: []
+        }
+
+        scores.forEach(ss => {
+            scoreLevels[ss.difficulty.toLowerCase()].push(ss)
+        })
+
+        this.setState({
+            beginner: scoreLevels.beginner,
+            intermediate: scoreLevels.intermediate,
+            difficult: scoreLevels.difficulty
+        })
 
     }
 
     // name = { ss.user.username }
     render() {
-        console.log(this.state.scores)
+        console.log(this.state.beginner)
         return (
             <div>
-                TEST!!!!!
-                <ul>
-                    {this.state.scores.map((ss, idx) => {
+                <Score scores={this.state.beginner} />
+                <Score scores={this.state.intermediate} />
+                <Score scores={this.state.difficult} />
 
-                        return <Score
-                            key={idx}
-                            score={ss.score}
-                            name={ss.user.username}
-                            difficulty={ss.difficulty} />
-                    })}
-                </ul>
-            </div>
+            </div >
         )
     }
 }
 
 export default LeaderBoard
+    // < ul >
+    // 
