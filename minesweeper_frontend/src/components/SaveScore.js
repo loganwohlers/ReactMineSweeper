@@ -42,14 +42,17 @@ class SaveScore extends React.Component {
   render() {
     return (
       <div className='finalScore'>
-        Submit score?
-        <form onSubmit={this.updateDbScore}>
+      <hr/>
+        Submit Score?
+        <form id='submitForm' onSubmit={this.updateDbScore}>
           <label>
             Name:
+            <br/>
             <input type='text' name='username' />
           </label>
           <input type='submit' />
         </form>
+        <hr/>
       </div>
     )
   }

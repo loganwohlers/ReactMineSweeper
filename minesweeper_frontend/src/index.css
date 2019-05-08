@@ -130,3 +130,7 @@ span {
 .finalScore {
   font-size: 30px;
 }
+
+#submitForm {
+  margin: 20px;
+}

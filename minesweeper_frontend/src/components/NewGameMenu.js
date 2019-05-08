@@ -19,10 +19,10 @@ class NewGameMenu extends React.Component {
               YOU LOST!
             </div>
           }
-          
+
           <br/>
           <div className='finalScore'>
-            Play again?
+            Play Again?
           </div>
           <GameMenu
             handleClick={this.props.restart}
