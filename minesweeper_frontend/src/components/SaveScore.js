@@ -6,7 +6,7 @@ class SaveScore extends React.Component {
     e.preventDefault()
     let { time, difficulty } = this.props;
     let user_id;
-    let username = e.target.children[0].children[0].value;
+    let username = e.target.children[0].children[0].value.toLowerCase();
 
     // FIND OR CREATE USER
     fetch('http://localhost:3000/users', {
@@ -36,7 +36,7 @@ class SaveScore extends React.Component {
           'difficulty': difficulty
         })
       })
-    }).then(()=>console.log('submitted'))
+    })
   }
 
   render() {
