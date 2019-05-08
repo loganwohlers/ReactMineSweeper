@@ -1,10 +1,55 @@
-#table {
-  margin: auto;
+@import url('https://fonts.googleapis.com/css?family=Gugi');
+
+* {
+  font-family: 'Gugi', cursive;
+}
+/* GAME MENU */
+
+#chooseDiff {
+  font-size: 25px;
+  margin: 5px;
+}
+
+.diffButtons {
+  display: inline;
+  font-size: 30px;
+  padding: 20px;
+}
+
+.diffButtons:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* LEADERBOARD */
+
+.leaderboard {
+  padding: 10px;
+  margin: 10px;
   height: auto;
-  width: auto;
-  border: 1px solid black;
+  display: flex;
+}
+
+.score {
+  flex: 1;
   text-align: center;
 }
+
+ol {
+  padding-inline-start: 100px;
+}
+
+span {
+  padding: 20px;
+  text-align: left;
+}
+
+span .scoreName {
+  text-align: center;
+}
+
+
+/* GAME */
 
 .square {
   height: 25px;
@@ -44,52 +89,17 @@
   width: 25px;
 }
 
-.menu {
-  border: 1px;
-  border-style: solid;
-  padding: 10px;
-  margin: 10px;
+#table {
+  margin: auto;
+  height: auto;
+  width: auto;
+  border: 1px solid black;
   text-align: center;
 }
 
-.infoMenu {
-  border: 1px;
-  border-style: solid;
+.menu {
   padding: 10px;
   margin: 10px;
   height: 80px;
   text-align: center;
-}
-
-p {
-  display: inline;
-}
-
-p:hover {
-  cursor: pointer;
-  font-weight: bold;
-}
-
-table {
-  textAlign: center;
-  tableLayout: fixed;
-}
-
-.leaderboard {
-  padding: 10px;
-  margin: 10px;
-  height: auto;
-  display: flex;
-}
-
-.score {
-  border: 1px;
-  border-style: solid;
-  display: inline;
-  height: auto;
-  flex: 1;
-}
-
-.scoreList {
-  /* list-style: none; */
 }
