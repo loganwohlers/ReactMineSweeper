@@ -37,6 +37,7 @@ class GameBoard extends React.Component {
     this.setState({
       grid: newGrid,
       mines,
+      activeTimer: true,
       difficulty
     }, () => {
       this.randomMines()
@@ -202,17 +203,10 @@ class GameBoard extends React.Component {
           }
         }
       }
-      this.setState({ active: false, gameOver: true, won: true })
+      this.setState({ activeTimer: false, gameOver: true, won: true })
       return true
     }
     return false;
-  }
-
-  // only starts timer
-  startTimer = () => {
-    if (!this.state.gameOver) {
-      this.setState({ activeTimer: true })
-    }
   }
 
   restartGame = (difficulty) => {
@@ -222,7 +216,6 @@ class GameBoard extends React.Component {
     }, () => {
       this.determineBoard(difficulty)
     })
-    //reset timer
   }
 
   returnTimer = (time) => {
@@ -272,12 +265,16 @@ class GameBoard extends React.Component {
           </tbody>
         </table>
         {this.state.gameOver ?
-          <NewGameMenu
-            won={this.state.won}
-            difficulty={this.state.difficulty}
-            restart={this.restartGame}
-            time={this.state.time} />
+          <>
+            <NewGameMenu
+              won={this.state.won}
+              difficulty={this.state.difficulty}
+              restart={this.restartGame}
+              time={this.state.time}
+            />
+          </>
           : null}
+
       </div>
     )
 

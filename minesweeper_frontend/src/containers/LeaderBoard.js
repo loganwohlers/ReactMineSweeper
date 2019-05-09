@@ -2,6 +2,8 @@ import React from 'react'
 import Score from '../components/Score'
 
 class LeaderBoard extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props)
     this.state = {
@@ -12,17 +14,36 @@ class LeaderBoard extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/games', {
+    this._isMounted = true;
+    this.getScores()
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.newScore) {
+      this.getScores();
+    }
+  }
+
+
+
+
+  getScores = () => {
+
+    fetch('https://react-minesweeper-backend.herokuapp.com/games', {
       method: "GET",
       headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       }
     })
-    .then((res) => res.json())
-    .then(scores => {
-      this.setScoresState(scores)
-    })
+      .then((res) => res.json())
+      .then(scores => {
+        this.setScoresState(scores)
+      })
   }
 
   setScoresState = (scores) => {
@@ -36,14 +57,16 @@ class LeaderBoard extends React.Component {
       scoreLevels[score.difficulty.toLowerCase()].push(score)
     })
 
-    this.setState({
-      beginner: scoreLevels.beginner,
-      intermediate: scoreLevels.intermediate,
-      difficult: scoreLevels.difficult
-    })
+
+    //slicing to limit to top 10 scores of each category
+    if (this._isMounted) {
+      this.setState({
+        beginner: scoreLevels.beginner.slice(0, 10),
+        intermediate: scoreLevels.intermediate.slice(0, 10),
+        difficult: scoreLevels.difficult.slice(0, 10)
+      })
+    }
   }
-
-
 
   render() {
     return (
@@ -66,5 +89,4 @@ class LeaderBoard extends React.Component {
 }
 
 export default LeaderBoard
-    // < ul >
-    //
+
